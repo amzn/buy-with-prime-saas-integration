@@ -50,7 +50,7 @@ export class ApiDemoInfraStack extends cdk.Stack {
     ud.addCommands('sudo yum install git -y', 
                     'sudo yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm',
                     'sudo systemctl start amazon-ssm-agent',
-                    'git clone https://github.com/yjw113080/buy-with-prime-oauth-handler-ec2.git', 
+                    'git clone https://github.com/amzn/buy-with-prime-oauth-handler-ec2.git', 
                     `echo "export CLIENT_ID=${process.env.CLIENT_ID}" >> ~/.bash_profile`,
                     `echo "export CLIENT_SECRET=${process.env.CLIENT_SECRET}" >> ~/.bash_profile`,
                     `echo "export APP_INSTALL_URL=http://${lb.loadBalancerDnsName}/install" >> ~/.bash_profile`,
@@ -87,7 +87,7 @@ export class ApiDemoInfraStack extends cdk.Stack {
 
 
     // 3. Event bus, rules and dead letter queue
-    const eventBus = cdk.aws_events.EventBus.fromEventBusArn(this, 'EventBus', process.env.EVENT_BUS_ARN!)
+/*     const eventBus = cdk.aws_events.EventBus.fromEventBusArn(this, 'EventBus', process.env.EVENT_BUS_ARN!) */
 
     const dlq = new sqs.Queue(this, 'ApiDemoInfraDeadLetterQueue')
     const queue = new sqs.Queue(this, 'ApiDemoInfraQueue', {
@@ -114,7 +114,7 @@ export class ApiDemoInfraStack extends cdk.Stack {
     demoDataStore.grantReadWriteData(lambdaFunction)
 
 
-    const rule = new cdk.aws_events.Rule(this, 'ApiDemoInfraRule', {
+/*     const rule = new cdk.aws_events.Rule(this, 'ApiDemoInfraRule', {
       eventBus,
       eventPattern: {
         source: [{prefix: ""}] as any[]
@@ -122,7 +122,7 @@ export class ApiDemoInfraStack extends cdk.Stack {
       targets: [new cdk.aws_events_targets.SqsQueue(queue, {
         deadLetterQueue: dlq
       })]
-    })
+    }) */
 
   }
 
