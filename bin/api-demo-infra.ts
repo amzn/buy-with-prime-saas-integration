@@ -7,4 +7,7 @@ import { Aspects } from 'aws-cdk-lib';
 
 const app = new cdk.App();
 /* Aspects.of(app).add(new AwsSolutionsChecks({verbose: true})) */
-new ApiDemoInfraStack(app, 'ApiDemoInfraStack');
+new ApiDemoInfraStack(app, 'ApiDemoInfraStack', {  env: { 
+    account: process.env.CDK_DEPLOY_ACCOUNT || process.env.CDK_DEFAULT_ACCOUNT, 
+    region: process.env.CDK_DEPLOY_REGION || process.env.CDK_DEFAULT_REGION 
+}});
