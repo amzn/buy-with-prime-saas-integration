@@ -30,7 +30,7 @@ You can use this repository to create the redirect urls that you need for [onboa
 
 1. Clone this repository to start off
     ```
-    git clone https://github.com/amzn/buy-with-prime-saas-integration.git //(특정 브랜치)
+    git clone -b wo-onboarding https://github.com/amzn/buy-with-prime-saas-integration.git
     cd buy-with-prime-saas-integration
     ```
 
