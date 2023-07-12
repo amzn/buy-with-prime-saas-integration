@@ -32,6 +32,7 @@ You can use this repository to create the redirect urls that you need for [onboa
     ```
     git clone -b wo-onboarding https://github.com/amzn/buy-with-prime-saas-integration.git
     cd buy-with-prime-saas-integration
+    npm i
     ```
 
 2. Deploy this CDK package to your environment
