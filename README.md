@@ -38,7 +38,7 @@ You can use this repository to create the redirect urls that you need for [onboa
 2. Deploy this CDK package to your environment
     ```
     export ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text)
-    cdk bootstrap ACCOUNT_ID/<<YOUR_CHOICE_OF_REGION>>
+    cdk bootstrap $ACCOUNT_ID/<<YOUR_CHOICE_OF_REGION>>
     cdk deploy
     ```
 
