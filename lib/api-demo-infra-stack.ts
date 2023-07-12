@@ -40,7 +40,7 @@ export class ApiDemoInfraStack extends cdk.Stack {
 
 
     // 2. OAuth 2.0 Handler
-    const vpc = new ec2.Vpc(this, 'OauthHandlerVpc');
+    const vpc = ec2.Vpc.fromLookup(this, 'DefaultVPC', {isDefault: true});
     const lb = new elb.ApplicationLoadBalancer(this, 'OauthHandlerLoadBalancer', {
       internetFacing: true,
       vpc
