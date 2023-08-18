@@ -8,6 +8,44 @@ from boto3.dynamodb.conditions import Key
 
 client = boto3.client('dynamodb')
 
+# Use this code snippet in your app.
+# If you need more information about configurations
+# or implementing the sample code, visit the AWS docs:
+# https://aws.amazon.com/developer/language/python/
+
+import boto3
+from botocore.exceptions import ClientError
+
+# secrets manager
+def get_secret():
+
+    secret_name = "bwp-saas-oauth-client-secret"
+    region_name = self.node.try_get_context("region")
+
+    # Create a Secrets Manager client
+    session = boto3.session.Session()
+    client = session.client(
+        service_name='secretsmanager',
+        region_name=region_name
+    )
+
+    try:
+        get_secret_value_response = client.get_secret_value(
+            SecretId=secret_name
+        )
+    except ClientError as e:
+        # For a list of exceptions thrown, see
+        # https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
+        raise e
+
+    # Decrypts secret using the associated KMS key.
+    secret = get_secret_value_response['SecretString']
+    
+    os.environ['CLIENT_ID'] = secret.client_id
+    os.environ['CLIENT_SECRET'] = secret.client_secret # validation required 
+
+    # Your code goes here.
+
 def lambda_handler(event, context):
     print(event)
     message = event['Records'][0]['body']
@@ -21,7 +59,7 @@ def lambda_handler(event, context):
     write_item(json_message, response)
        
 
-def refresh_token(installation_id, rf_token):
+def refresh_token(installation_id, rf_token): 
     url = "https://api.ais.prod.vinewood.dubai.aws.dev/token"
     payload='grant_type=refresh_token&client_id={}&client_secret={}&refresh_token={}'.format(os.environ['CLIENT_ID'], os.environ['CLIENT_SECRET'], rf_token)
     headers = {

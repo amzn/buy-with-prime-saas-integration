@@ -1,13 +1,13 @@
 // import * as cdk from 'aws-cdk-lib';
 // import { Template } from 'aws-cdk-lib/assertions';
-// import * as ApiDemoInfra from '../lib/api-demo-infra-stack';
+// import * as EcsCdk from '../lib/ecs-cdk-stack';
 
 // example test. To run these tests, uncomment this file along with the
-// example resource in lib/api-demo-infra-stack.ts
+// example resource in lib/ecs-cdk-stack.ts
 test('SQS Queue Created', () => {
 //   const app = new cdk.App();
 //     // WHEN
-//   const stack = new ApiDemoInfra.ApiDemoInfraStack(app, 'MyTestStack');
+//   const stack = new EcsCdk.EcsCdkStack(app, 'MyTestStack');
 //     // THEN
 //   const template = Template.fromStack(stack);
 
