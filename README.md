@@ -7,7 +7,7 @@ You are a superstar developer of SupaDupa Analytics Solution, which provides dat
 - Event bus and Rule creation after being allowlisted by Buy with Prime Event source. The developers can achieve this by following the guidance from [this document](https://partners.buywithprime.amazon.com/support/documentation?redirect=%2Fprivate%2Fdocs%2Fbuy-with-prime-event-integration-guide)
 
 ## Demo architecture
-![](architecture.png)
+![](/images/architecture.png)
 
 ### Demo source code break down
 - `codes` has OAuth handler application codes and Buy with Prime event handler Lambda code.
@@ -43,8 +43,8 @@ chmod +x docker.sh
 ```
 cdk deploy EcsStack
 ```
-- Check your OAuth token in Amazon DynamoDB Token Store.
-- Use the token to query Buy with Prime API. 
+- Check your OAuth token in Amazon DynamoDB Token Store. Use the token to query Buy with Prime API. 
+![](images/oauth-table.png)
 
 ### (Optioanl) Event Stack
 - Request event subscription. As a result, you will have Amazon EventBridge Partner Event Source created in your AWS account.
@@ -61,7 +61,7 @@ cdk deploy EventStack
 3. SQS takes the message with DeadLetterQueue setup
 4. Lambda is triggered to take the Event generated time and queries the API to obtain the Store's `siteId`. Then it stores the result to DynamoDB.
 5. In DynamoDB table, you can check the new Item created.
-    ![](./table-result.png)
+    ![](images/table-result.png)
 
 <!-- ## (Optional) How to get started to onboard to Buy with Prime APIs
 You can use this repository to create the redirect urls that you need for [onboarding to Buy with Prime APIs](https://documents.partners.buywithprime.amazon.com/private/docs/onboarding-for-oauth-20). Please follow the steps listed below. It requires you to have AWS CLI configured already if you have not already please check [this page](https://catalog.us-east-1.prod.workshops.aws/workshops/2b14c78c-56e3-4ed8-b44a-4984094ec8c4/en-US/1-introduction/110-prereq) out and complete the setting. 
