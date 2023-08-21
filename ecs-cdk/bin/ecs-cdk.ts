@@ -27,10 +27,10 @@ new EcsStack(app, 'EcsStack', {
   tokenStore: infraStack.tokenStore,
 });
 
-new EventStack(app, 'EventStack', {
-  tokenStore: infraStack.tokenStore, 
-  env: {
-    account: process.env.CDK_DEPLOY_ACCOUNT || process.env.CDK_DEFAULT_ACCOUNT, 
-    region: process.env.CDK_DEPLOY_REGION || process.env.CDK_DEFAULT_REGION 
-  }
-})
+// new EventStack(app, 'EventStack', {
+//   tokenStore: infraStack.tokenStore, 
+//   env: {
+//     account: process.env.CDK_DEPLOY_ACCOUNT || process.env.CDK_DEFAULT_ACCOUNT, 
+//     region: process.env.CDK_DEPLOY_REGION || process.env.CDK_DEFAULT_REGION 
+//   }
+// })
