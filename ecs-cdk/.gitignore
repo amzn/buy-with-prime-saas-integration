@@ -7,3 +7,10 @@ node_modules
 .cdk.staging
 cdk.out
 
+cdk.context.json
+cdk.json
+!jest.config.json
+tsconfig.json
+.gitignore
+.npmignore
+

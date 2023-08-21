@@ -4,10 +4,4 @@
 # CDK asset staging directory
 .cdk.staging
 cdk.out
-cdk.context.json
-cdk.json
-!jest.config.json
-package*.json
-tsconfig.json
-.gitignore
-.npmignore
+
