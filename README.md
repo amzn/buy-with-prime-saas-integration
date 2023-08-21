@@ -23,6 +23,11 @@ You are a superstar developer of SupaDupa Analytics Solution, which provides dat
 - `.gitignore` and `.npmignore` tell git and npm which files to include/exclude from source control and when publishing this module to the package manager.
 
 ## Workshop flow
+- git clone https://github.com/amzn/buy-with-prime-saas-integration.git
+- cd buy-with-prime-saas-integration/ecs-cdk
+- npm i
+- cdk bootstrap
+
 ### InfraStack
 - Deploy `InfraStack`
 ```
@@ -49,6 +54,7 @@ cdk deploy EcsStack
 ### (Optioanl) Event Stack
 - Request event subscription. As a result, you will have Amazon EventBridge Partner Event Source created in your AWS account.
 - Update `.env` file with the Amazon EventBridge's ARN (Amazon Resource Name).
+- Open `/bin/ecs-cdk.ts` and uncomment `EventStack` out (Line 30~36)
 - Deploy `EventStack`
 ```
 cdk deploy EventStack
