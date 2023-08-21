@@ -23,10 +23,13 @@ You are a superstar developer of SupaDupa Analytics Solution, which provides dat
 - `.gitignore` and `.npmignore` tell git and npm which files to include/exclude from source control and when publishing this module to the package manager.
 
 ## Workshop flow
-- git clone https://github.com/amzn/buy-with-prime-saas-integration.git
-- cd buy-with-prime-saas-integration/ecs-cdk
-- npm i
-- cdk bootstrap
+### Preparation
+```
+git clone https://github.com/amzn/buy-with-prime-saas-integration.git
+cd buy-with-prime-saas-integration/ecs-cdk
+npm i
+cdk bootstrap
+```
 
 ### InfraStack
 - Deploy `InfraStack`
