@@ -40,7 +40,7 @@ cdk deploy InfraStack
 - You will see the result. Use `InfraStack.loadbalancerDnsUrl` when requesting app onboarding. You should use lowercased DNS without Capitals. 
 ```
 url="Infra-Oauth-1T950NUUBLABLA-1234796353.us-west-1.elb.amazonaws.com"
-[cloudshell-user@ip-10-6-57-118 ecs-cdk]$ echo "$url" | awk '{print tolower($0)}'
+echo "$url" | awk '{print tolower($0)}'
 infra-oauth-1t950nuublabla-1234796353.us-west-1.elb.amazonaws.com
 ```
 - Your app onboarding request may take up to 1+ business day to complete. Once completed, you will have your `Client ID` for your app. 
