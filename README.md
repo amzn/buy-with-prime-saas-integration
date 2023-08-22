@@ -37,7 +37,7 @@ cdk bootstrap
 cd ecs-cdk
 cdk deploy InfraStack
 ```
-- Use ALB DNS name to request your app onboarding. As a result, you will have your `Client ID` for your app. 
+- You will see the result. Use ALB DNS name to request your app onboarding. As a result, you will have your `Client ID` for your app. 
 - Once your app onboarding request approved, generate `Client secret` for your app. 
 - Store `Client ID` and `Client secret` in `.env`
 - Run `docker.sh` to build Docker image and push it to ECR repository. 
