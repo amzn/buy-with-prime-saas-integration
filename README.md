@@ -46,13 +46,13 @@ infra-oauth-1t950nuublabla-1234796353.us-west-1.elb.amazonaws.com
 - Your app onboarding request may take up to 1+ business day to complete. Once completed, you will have your `Client ID` for your app. 
 - Once your app onboarding request approved, generate `Client secret` for your app. Follow instruction from [App Onboarding for OAuth 2.0](https://documents.partners.buywithprime.amazon.com/private/docs/onboarding-for-oauth-20#client-secret-retrieval) in Buy with Prime Partner Document hub (Authentication required). 
 - Store `Client ID` and `Client secret` in `.env`
+
+### EcsStack
 - Run `docker.sh` to build Docker image and push it to ECR repository. 
 ```
 chmod +x docker.sh
 ./docker.sh
 ```
-
-### EcsStack
 - Deploy `EcsStack`
 ```
 cdk deploy EcsStack
