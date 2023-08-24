@@ -50,6 +50,7 @@ infra-oauth-1t950nuublabla-1234796353.us-west-1.elb.amazonaws.com
 ### EcsStack
 - Run `docker.sh` to build Docker image and push it to ECR repository. 
 ```
+export AWS_REGION=us-east-1 // Your region
 chmod +x docker.sh
 ./docker.sh
 ```
