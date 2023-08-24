@@ -1,5 +1,5 @@
 export ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text) 
-# export AWS_REGION=$(curl -s 169.254.169.254/latest/dynamic/instance-identity/document | jq -r '.region') # for Cloud9
+export AWS_REGION=$(curl -s 169.254.169.254/latest/dynamic/instance-identity/document | jq -r '.region') # for Cloud9
 # export AWS_REGION='YOUR_REGION' # for local PC or cloudshell
 
 echo "ACCOUNT_ID=${ACCOUNT_ID}" | tee -a ~/.bash_profile

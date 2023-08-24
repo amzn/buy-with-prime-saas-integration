@@ -38,6 +38,7 @@ const BWP_AUTHORIZE_URL = "https://console.buywithprime.amazon.com/marketplace/a
 const BWP_TOKEN_URL = "https://api.ais.prod.vinewood.dubai.aws.dev/token";
 const TOKEN_STORE_TABLE_NAME = process.env.TOKEN_STORE_TABLE_NAME
 const APP_INSTALL_URL_C = process.env.APP_INSTALL_URL_C
+const APP_INSTALL_URL = APP_INSTALL_URL_C.toLowerCase()
 
 export const getSecretValue = async (secretName) => {
   const client = new SecretsManagerClient();
