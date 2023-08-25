@@ -66,7 +66,7 @@ export class EcsStack extends cdk.Stack {
 
         const ecrRepo = props.ecrRepo;
         const importedDnsUrl = cdk.Fn.importValue('installUrl');
-        const installUrl = importedDnsUrl.toString()+"/install";
+        const installUrl = "http://"+importedDnsUrl.toString()+"/install";
 
         const container = taskDefinition.addContainer('oauth', {
             image: ecs.EcrImage.fromEcrRepository(ecrRepo, "latest"),
