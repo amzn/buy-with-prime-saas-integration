@@ -1,12 +1,11 @@
 # Build a SaaS integration for Buy with Prime
 
+## Where to start? 
+Find here the up-to-date official [Build a SaaS integraion for Buy with Prime workshop.](https://catalog.workshops.aws/bwp-saas-integration/en-US) The workshop walk you through the journey for building a Buy with Prime app. This repository is the final artifact that you would get as a result of completing the workshop. 
+
 ## How SupaDupa Analytics Solution integrates with Buy with Prime
 
 You are a superstar developer of SupaDupa Analytics Solution, which provides data analytics service for eCommerce business. You've got to know Buy with Prime helps the merchants to provide Prime benefits from their website, basically off Amazon! You are so excited and want to create some business opportunity for your company as well by providing your services to merchants using Buy with Prime using. 
-
-## Where should we start? 
-[This workshop](https://catalog.workshops.aws/bwp-saas-integration/en-US) will guide you through the journey for the integration. This repository is the final artifact that you would get as a result of completing the workshop. 
-
 ## Demo architecture
 ![](/images/architecture.png)
 
