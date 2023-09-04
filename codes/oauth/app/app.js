@@ -1,4 +1,3 @@
-
 import { SecretsManagerClient, GetSecretValueCommand} from "@aws-sdk/client-secrets-manager";
 import * as docClient from "@aws-sdk/client-dynamodb";
 import * as jwt from "jsonwebtoken";
@@ -8,6 +7,8 @@ import express from "express";
 import cors from "cors";
 import session from "express-session";
 import bodyParser from "body-parser";
+import dotenv from "dotenv";
+dotenv.config()
 
 const sm = new SecretsManagerClient();
 
@@ -39,6 +40,7 @@ const BWP_TOKEN_URL = "https://api.ais.prod.vinewood.dubai.aws.dev/token";
 const TOKEN_STORE_TABLE_NAME = process.env.TOKEN_STORE_TABLE_NAME
 const APP_INSTALL_URL_C = process.env.APP_INSTALL_URL_C
 const APP_INSTALL_URL = APP_INSTALL_URL_C.toLowerCase()
+
 
 export const getSecretValue = async (secretName) => {
   const client = new SecretsManagerClient();
