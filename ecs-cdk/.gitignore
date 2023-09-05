@@ -14,3 +14,5 @@ tsconfig.json
 .gitignore
 .npmignore
 
+.env
+codes/api-test/.env
