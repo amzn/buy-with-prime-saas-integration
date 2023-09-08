@@ -33,13 +33,14 @@ export class InfraStack extends cdk.Stack {
 
     this.targetGroup = new elb.ApplicationTargetGroup(this, 'TargetGroup', {
       vpc: vpc,
-      port: 8080 
+      port: 8080,
+      stickinessCookieDuration: cdk.Duration.days(1) // Don't remove it!!
     });
 
     lb.addListener('Listener', {
       port: 80,
       defaultTargetGroups: [this.targetGroup],
-      protocol: cdk.aws_elasticloadbalancingv2.ApplicationProtocol.HTTP // did not work.
+      protocol: cdk.aws_elasticloadbalancingv2.ApplicationProtocol.HTTP 
     })
 
     // 3. Create Amazon ECR repository for oauth handler containers. 

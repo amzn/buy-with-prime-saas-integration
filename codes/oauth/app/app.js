@@ -1,21 +1,17 @@
-import { SecretsManagerClient, GetSecretValueCommand} from "@aws-sdk/client-secrets-manager";
-import * as docClient from "@aws-sdk/client-dynamodb";
-import * as jwt from "jsonwebtoken";
-import * as crypto from "crypto";
-import axios from "axios";
-import express from "express";
-import cors from "cors";
-import session from "express-session";
-import bodyParser from "body-parser";
-import dotenv from "dotenv";
-dotenv.config()
-
-const sm = new SecretsManagerClient();
-
+const express = require("express");
+const axios = require("axios");
+const cors = require("cors");
+const session = require("express-session");
+const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
+const bodyParser = require('body-parser');
+require('dotenv').config()
+const AWS = require('aws-sdk');
+const docClient = new AWS.DynamoDB.DocumentClient();
 const app = express();
 
 app.use(cors({ credentials: true, origin: true }));
-app.use(session({secret: 'ssshhhhh',saveUninitialized: true,resave: true})); 
+app.use(session({secret: 'ssshhhhh',saveUninitialized: true,resave: true}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -37,31 +33,18 @@ PIBdR7qP73NhRBdNhUNfERayW67OP+ufvhpgdWUcbxXQkos8KkwL8yRMzQ==
 
 const BWP_AUTHORIZE_URL = "https://console.buywithprime.amazon.com/marketplace/authorize";
 const BWP_TOKEN_URL = "https://api.ais.prod.vinewood.dubai.aws.dev/token";
+
 const TOKEN_STORE_TABLE_NAME = process.env.TOKEN_STORE_TABLE_NAME
 const APP_INSTALL_URL_C = process.env.APP_INSTALL_URL_C
-const APP_INSTALL_URL = APP_INSTALL_URL_C.toLowerCase()
+const APP_INSTALL_URL = APP_INSTALL_URL_C.toLowerCase()  
 
-
-export const getSecretValue = async (secretName) => {
-  const client = new SecretsManagerClient();
-  const response = await client.send(
-    new GetSecretValueCommand({
-      SecretId: secretName,
-    })
-  );
-  const secretJSON = JSON.parse(response.SecretString);
-  return [secretJSON.client_id, secretJSON.client_secret];
-};
-
-let secret = await getSecretValue("bwp-saas-oauth-client-secret"); 
-
-let CLIENT_ID = secret[0];
-let CLIENT_SECRET = secret[1];
+const CLIENT_ID = process.env.CLIENT_ID
+const CLIENT_SECRET = process.env.CLIENT_SECRET
 
 app.get("/", (req, res) => {
     try {
-        console.log("Access from browser")
-        res.send("Answer from web server - ECS container")
+        console.log("Access from browser", CLIENT_ID)
+        res.send("Answer from web server")
     } catch (err) {
         console.log("Access from browser failed")
         res.send(err)
@@ -72,6 +55,7 @@ app.get("/hc", (req, res) => {
     console.log("Health check")
     try {
         console.log("Health check completed")
+        console.log(CLIENT_ID)
         res.send(req)
     } catch (err) {
         res.send(err)
@@ -82,7 +66,7 @@ app.get("/launch", (req, res) => {
 
     let state = Math.random();
     req.session.state = state; 
-    let redirect_url = `${BWP_AUTHORIZE_URL}?response_type=code&client_id=${CLIENT_ID}&state=${state}&redirect_uri=${encodeURIComponent(APP_INSTALL_URL)}` // secretJSON.install_uri
+    let redirect_url = `${BWP_AUTHORIZE_URL}?response_type=code&client_id=${CLIENT_ID}&state=${state}&redirect_uri=${encodeURIComponent(APP_INSTALL_URL)}`
     console.log("/launch")
     console.log("Launch request initiated")
     console.log(redirect_url)
