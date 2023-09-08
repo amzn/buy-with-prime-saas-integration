@@ -24,6 +24,7 @@ export class EcsStack extends cdk.Stack {
     
         // 2. Create ECS cluster  
         const cluster = new ecs.Cluster(this, 'oauthCluster', { vpc });
+        cluster.applyRemovalPolicy(cdk.RemovalPolicy.DESTROY)
         
         // 3. Create Task role 
         const oauthTaskRole = new iam.Role(this, 'oauthTaskRole', {
@@ -35,8 +36,8 @@ export class EcsStack extends cdk.Stack {
         // 4. Create Task definition
         const taskDefinition = new ecs.TaskDefinition(this, 'TaskDef', {
             compatibility: ecs.Compatibility.FARGATE,
-            memoryMiB: '512',
-            cpu: '256',
+            memoryMiB: '2048',
+            cpu: '1024',
             taskRole: oauthTaskRole,
             runtimePlatform: {
                 operatingSystemFamily: ecs.OperatingSystemFamily.LINUX
@@ -70,13 +71,17 @@ export class EcsStack extends cdk.Stack {
 
         const container = taskDefinition.addContainer('oauth', {
             image: ecs.EcrImage.fromEcrRepository(ecrRepo, "latest"),
-            memoryLimitMiB: 256,
+            memoryLimitMiB: 2048,
             logging: new ecs.AwsLogDriver({ streamPrefix: 'bwp-oauth', mode: ecs.AwsLogDriverMode.NON_BLOCKING }), 
             environment: 
                 {
                     ["APP_INSTALL_URL_C"]: installUrl, // CDK generating ALB has capitals in DNS. Should be lowercased in application code to avoid hash validation error.  
                     ["TOKEN_STORE_TABLE_NAME"]: props.tokenStore.tableName
                 },
+            secrets: {
+                CLIENT_ID: ecs.Secret.fromSecretsManager(appCredential, 'client_id'),
+                CLIENT_SECRET: ecs.Secret.fromSecretsManager(appCredential, 'client_secret')
+            }
         })
 
         container.addPortMappings({
@@ -91,6 +96,7 @@ export class EcsStack extends cdk.Stack {
             taskDefinition,
             desiredCount: 2
         });
+        service.applyRemovalPolicy(cdk.RemovalPolicy.DESTROY)
         
         props.targetGroup.addTarget(service);
 }}
