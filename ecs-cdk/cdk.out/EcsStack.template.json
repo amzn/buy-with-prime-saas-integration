@@ -1,0 +1,559 @@
+{
+ "Resources": {
+  "ClientSecret6773D8CE": {
+   "Type": "AWS::SecretsManager::Secret",
+   "Properties": {
+    "Name": "bwp-saas-oauth-client-secret",
+    "SecretString": "{\"client_id\":\"prod-gwtcg4lge4vggbobo\",\"client_secret\":\"dtfcvaRrUQjAvTbeXSfpk4gmajU\"}"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "EcsStack/ClientSecret/Resource"
+   }
+  },
+  "ClientSecretPolicy7BC9EB53": {
+   "Type": "AWS::SecretsManager::ResourcePolicy",
+   "Properties": {
+    "ResourcePolicy": {
+     "Statement": [
+      {
+       "Action": [
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:GetSecretValue"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::GetAtt": [
+          "oauthTaskRoleC9C33496",
+          "Arn"
+         ]
+        }
+       },
+       "Resource": {
+        "Ref": "ClientSecret6773D8CE"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "SecretId": {
+     "Ref": "ClientSecret6773D8CE"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsStack/ClientSecret/Policy/Resource"
+   }
+  },
+  "oauthCluster5C29B149": {
+   "Type": "AWS::ECS::Cluster",
+   "Metadata": {
+    "aws:cdk:path": "EcsStack/oauthCluster/Resource"
+   }
+  },
+  "oauthTaskRoleC9C33496": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Description": "ecs task role to access secrets manager and dynamoDB"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "EcsStack/oauthTaskRole/Resource"
+   }
+  },
+  "TaskDef54694570": {
+   "Type": "AWS::ECS::TaskDefinition",
+   "Properties": {
+    "ContainerDefinitions": [
+     {
+      "Environment": [
+       {
+        "Name": "APP_INSTALL_URL_C",
+        "Value": {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "installUrl"
+           },
+           "/install"
+          ]
+         ]
+        }
+       },
+       {
+        "Name": "TOKEN_STORE_TABLE_NAME",
+        "Value": {
+         "Fn::ImportValue": "InfraStack:ExportsOutputRefBuywithPrimeTokenStoreB1C1282A26952121"
+        }
+       }
+      ],
+      "Essential": true,
+      "Image": {
+       "Fn::Join": [
+        "",
+        [
+         {
+          "Fn::Select": [
+           4,
+           {
+            "Fn::Split": [
+             ":",
+             {
+              "Fn::ImportValue": "InfraStack:ExportsOutputFnGetAttoauthECREF231385ArnD57FAB67"
+             }
+            ]
+           }
+          ]
+         },
+         ".dkr.ecr.",
+         {
+          "Fn::Select": [
+           3,
+           {
+            "Fn::Split": [
+             ":",
+             {
+              "Fn::ImportValue": "InfraStack:ExportsOutputFnGetAttoauthECREF231385ArnD57FAB67"
+             }
+            ]
+           }
+          ]
+         },
+         ".",
+         {
+          "Ref": "AWS::URLSuffix"
+         },
+         "/",
+         {
+          "Fn::ImportValue": "InfraStack:ExportsOutputRefoauthECREF231385B6402735"
+         },
+         ":latest"
+        ]
+       ]
+      },
+      "LogConfiguration": {
+       "LogDriver": "awslogs",
+       "Options": {
+        "awslogs-group": {
+         "Ref": "TaskDefoauthLogGroupAB937FC7"
+        },
+        "awslogs-stream-prefix": "bwp-oauth",
+        "awslogs-region": "us-east-1",
+        "mode": "non-blocking"
+       }
+      },
+      "Memory": 256,
+      "Name": "oauth",
+      "PortMappings": [
+       {
+        "ContainerPort": 8080,
+        "HostPort": 8080,
+        "Protocol": "tcp"
+       }
+      ]
+     }
+    ],
+    "Cpu": "256",
+    "ExecutionRoleArn": {
+     "Fn::GetAtt": [
+      "TaskDefExecutionRoleB4775C97",
+      "Arn"
+     ]
+    },
+    "Family": "EcsStackTaskDefF4279AC8",
+    "Memory": "512",
+    "NetworkMode": "awsvpc",
+    "RequiresCompatibilities": [
+     "FARGATE"
+    ],
+    "RuntimePlatform": {
+     "OperatingSystemFamily": "LINUX"
+    },
+    "TaskRoleArn": {
+     "Fn::GetAtt": [
+      "oauthTaskRoleC9C33496",
+      "Arn"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsStack/TaskDef/Resource"
+   }
+  },
+  "TaskDefExecutionRoleB4775C97": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "EcsStack/TaskDef/ExecutionRole/Resource"
+   }
+  },
+  "TaskDefExecutionRoleDefaultPolicy0DBB737A": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:BatchGetImage",
+        "ecr:GetAuthorizationToken",
+        "ecr:GetDownloadUrlForLayer",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:BatchGetImage",
+        "ecr:GetDownloadUrlForLayer"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::ImportValue": "InfraStack:ExportsOutputFnGetAttoauthECREF231385ArnD57FAB67"
+       }
+      },
+      {
+       "Action": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "TaskDefoauthLogGroupAB937FC7",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "TaskDefExecutionRoleDefaultPolicy0DBB737A",
+    "Roles": [
+     {
+      "Ref": "TaskDefExecutionRoleB4775C97"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsStack/TaskDef/ExecutionRole/DefaultPolicy/Resource"
+   }
+  },
+  "TaskDefoauthLogGroupAB937FC7": {
+   "Type": "AWS::Logs::LogGroup",
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "EcsStack/TaskDef/oauth/LogGroup/Resource"
+   }
+  },
+  "clientsecretrolePolicyEcsStackclientsecretrole374777F42963947A": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:GetSecretValue"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Ref": "ClientSecret6773D8CE"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "PolicyEcsStackclientsecretrole374777F4",
+    "Roles": [
+     {
+      "Fn::Select": [
+       1,
+       {
+        "Fn::Split": [
+         "/",
+         {
+          "Fn::Select": [
+           5,
+           {
+            "Fn::Split": [
+             ":",
+             {
+              "Fn::GetAtt": [
+               "oauthTaskRoleC9C33496",
+               "Arn"
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsStack/client-secret-role/PolicyEcsStackclientsecretrole374777F4/Resource"
+   }
+  },
+  "tokenstorerolePolicyEcsStacktokenstorerole38CA932EFEE4EF59": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "InfraStack:ExportsOutputFnGetAttBuywithPrimeTokenStoreB1C1282AArnE7773FF3"
+        },
+        {
+         "Ref": "AWS::NoValue"
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "PolicyEcsStacktokenstorerole38CA932E",
+    "Roles": [
+     {
+      "Fn::Select": [
+       1,
+       {
+        "Fn::Split": [
+         "/",
+         {
+          "Fn::Select": [
+           5,
+           {
+            "Fn::Split": [
+             ":",
+             {
+              "Fn::GetAtt": [
+               "oauthTaskRoleC9C33496",
+               "Arn"
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsStack/tokenstore-role/PolicyEcsStacktokenstorerole38CA932E/Resource"
+   }
+  },
+  "oauthServiceF1B57C3D": {
+   "Type": "AWS::ECS::Service",
+   "Properties": {
+    "Cluster": {
+     "Ref": "oauthCluster5C29B149"
+    },
+    "DeploymentConfiguration": {
+     "MaximumPercent": 200,
+     "MinimumHealthyPercent": 50
+    },
+    "DesiredCount": 2,
+    "EnableECSManagedTags": false,
+    "HealthCheckGracePeriodSeconds": 60,
+    "LaunchType": "FARGATE",
+    "LoadBalancers": [
+     {
+      "ContainerName": "oauth",
+      "ContainerPort": 8080,
+      "TargetGroupArn": {
+       "Fn::ImportValue": "InfraStack:ExportsOutputRefTargetGroup3D7CD9B851D89F1E"
+      }
+     }
+    ],
+    "NetworkConfiguration": {
+     "AwsvpcConfiguration": {
+      "AssignPublicIp": "DISABLED",
+      "SecurityGroups": [
+       {
+        "Fn::GetAtt": [
+         "oauthServiceSecurityGroup7D57B8B2",
+         "GroupId"
+        ]
+       }
+      ],
+      "Subnets": [
+       {
+        "Fn::ImportValue": "InfraStack:ExportsOutputRefBuywithPrimeSaaSworkshopPrivateSubnet1SubnetFCA4D7E10F495B9D"
+       },
+       {
+        "Fn::ImportValue": "InfraStack:ExportsOutputRefBuywithPrimeSaaSworkshopPrivateSubnet2SubnetD820DF6B3290DAD2"
+       }
+      ]
+     }
+    },
+    "TaskDefinition": {
+     "Ref": "TaskDef54694570"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsStack/oauthService/Service"
+   }
+  },
+  "oauthServiceSecurityGroup7D57B8B2": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "EcsStack/oauthService/SecurityGroup",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Fn::ImportValue": "InfraStack:ExportsOutputRefBuywithPrimeSaaSworkshopAF2D401C942F8372"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsStack/oauthService/SecurityGroup/Resource"
+   }
+  },
+  "oauthServiceSecurityGroupfromInfraStackOauthHandlerLoadBalancerSecurityGroup90E4A1AB8080783CF174": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "IpProtocol": "tcp",
+    "Description": "Load balancer to target",
+    "FromPort": 8080,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "oauthServiceSecurityGroup7D57B8B2",
+      "GroupId"
+     ]
+    },
+    "SourceSecurityGroupId": {
+     "Fn::ImportValue": "InfraStack:ExportsOutputFnGetAttOauthHandlerLoadBalancerSecurityGroupBB95F5E5GroupId3BFEFE46"
+    },
+    "ToPort": 8080
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsStack/oauthService/SecurityGroup/from InfraStackOauthHandlerLoadBalancerSecurityGroup90E4A1AB:8080"
+   }
+  },
+  "oauthServiceSecurityGroupInfraStackOauthHandlerLoadBalancerSecurityGroup90E4A1AB8080fromE889A62E": {
+   "Type": "AWS::EC2::SecurityGroupEgress",
+   "Properties": {
+    "GroupId": {
+     "Fn::ImportValue": "InfraStack:ExportsOutputFnGetAttOauthHandlerLoadBalancerSecurityGroupBB95F5E5GroupId3BFEFE46"
+    },
+    "IpProtocol": "tcp",
+    "Description": "Load balancer to target",
+    "DestinationSecurityGroupId": {
+     "Fn::GetAtt": [
+      "oauthServiceSecurityGroup7D57B8B2",
+      "GroupId"
+     ]
+    },
+    "FromPort": 8080,
+    "ToPort": 8080
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsStack/oauthService/SecurityGroup/InfraStackOauthHandlerLoadBalancerSecurityGroup90E4A1AB:8080 from"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/32QwW7CMAyGn4V7GlaQEHe2oUk7TGV3lAUTmabJZCdMqMq7rwkrAybt5N/fd/ntmVzOZT1RX1zpXVtZ/JD9JijdigFtewZNELhTThmgQZVdrPbuJzXAPpKGN29Rn7K4JUmAZtmvbOQAlP0Y3xW3j7BHhwG9y+aeeBcUOqAr9qzIqAAboCNqOPcoMQlUnewbbwst87fT2MV6M5R59WZNPn5mM+bcc1bui4ThdPH/gxdnCJj/8KeCU7q85/oxSTi/A3ng6bFeynohHyYHRqwouoAdyOY8vwFExNjOmgEAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

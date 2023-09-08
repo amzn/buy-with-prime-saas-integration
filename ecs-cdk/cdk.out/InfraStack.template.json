@@ -1,0 +1,1003 @@
+{
+ "Resources": {
+  "BuywithPrimeSaaSworkshopAF2D401C": {
+   "Type": "AWS::EC2::VPC",
+   "Properties": {
+    "CidrBlock": "10.0.0.0/16",
+    "EnableDnsHostnames": true,
+    "EnableDnsSupport": true,
+    "InstanceTenancy": "default",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "InfraStack/BuywithPrime-SaaS-workshop"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/BuywithPrime-SaaS-workshop/Resource"
+   }
+  },
+  "BuywithPrimeSaaSworkshopPublicSubnet1SubnetA27F4821": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "VpcId": {
+     "Ref": "BuywithPrimeSaaSworkshopAF2D401C"
+    },
+    "AvailabilityZone": "dummy1a",
+    "CidrBlock": "10.0.0.0/18",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "InfraStack/BuywithPrime-SaaS-workshop/PublicSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/BuywithPrime-SaaS-workshop/PublicSubnet1/Subnet"
+   }
+  },
+  "BuywithPrimeSaaSworkshopPublicSubnet1RouteTable8EC736E6": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "VpcId": {
+     "Ref": "BuywithPrimeSaaSworkshopAF2D401C"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "InfraStack/BuywithPrime-SaaS-workshop/PublicSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/BuywithPrime-SaaS-workshop/PublicSubnet1/RouteTable"
+   }
+  },
+  "BuywithPrimeSaaSworkshopPublicSubnet1RouteTableAssociationA4713494": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "BuywithPrimeSaaSworkshopPublicSubnet1RouteTable8EC736E6"
+    },
+    "SubnetId": {
+     "Ref": "BuywithPrimeSaaSworkshopPublicSubnet1SubnetA27F4821"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/BuywithPrime-SaaS-workshop/PublicSubnet1/RouteTableAssociation"
+   }
+  },
+  "BuywithPrimeSaaSworkshopPublicSubnet1DefaultRoute5D9E6343": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "BuywithPrimeSaaSworkshopPublicSubnet1RouteTable8EC736E6"
+    },
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "BuywithPrimeSaaSworkshopIGW04E0C78F"
+    }
+   },
+   "DependsOn": [
+    "BuywithPrimeSaaSworkshopVPCGWE744D740"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/BuywithPrime-SaaS-workshop/PublicSubnet1/DefaultRoute"
+   }
+  },
+  "BuywithPrimeSaaSworkshopPublicSubnet1EIPE72B8DB0": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "InfraStack/BuywithPrime-SaaS-workshop/PublicSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/BuywithPrime-SaaS-workshop/PublicSubnet1/EIP"
+   }
+  },
+  "BuywithPrimeSaaSworkshopPublicSubnet1NATGateway316871D6": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "SubnetId": {
+     "Ref": "BuywithPrimeSaaSworkshopPublicSubnet1SubnetA27F4821"
+    },
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "BuywithPrimeSaaSworkshopPublicSubnet1EIPE72B8DB0",
+      "AllocationId"
+     ]
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "InfraStack/BuywithPrime-SaaS-workshop/PublicSubnet1"
+     }
+    ]
+   },
+   "DependsOn": [
+    "BuywithPrimeSaaSworkshopPublicSubnet1DefaultRoute5D9E6343",
+    "BuywithPrimeSaaSworkshopPublicSubnet1RouteTableAssociationA4713494"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/BuywithPrime-SaaS-workshop/PublicSubnet1/NATGateway"
+   }
+  },
+  "BuywithPrimeSaaSworkshopPublicSubnet2Subnet328CAB23": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "VpcId": {
+     "Ref": "BuywithPrimeSaaSworkshopAF2D401C"
+    },
+    "AvailabilityZone": "dummy1b",
+    "CidrBlock": "10.0.64.0/18",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "InfraStack/BuywithPrime-SaaS-workshop/PublicSubnet2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/BuywithPrime-SaaS-workshop/PublicSubnet2/Subnet"
+   }
+  },
+  "BuywithPrimeSaaSworkshopPublicSubnet2RouteTableD4546EDA": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "VpcId": {
+     "Ref": "BuywithPrimeSaaSworkshopAF2D401C"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "InfraStack/BuywithPrime-SaaS-workshop/PublicSubnet2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/BuywithPrime-SaaS-workshop/PublicSubnet2/RouteTable"
+   }
+  },
+  "BuywithPrimeSaaSworkshopPublicSubnet2RouteTableAssociationF0485D7D": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "BuywithPrimeSaaSworkshopPublicSubnet2RouteTableD4546EDA"
+    },
+    "SubnetId": {
+     "Ref": "BuywithPrimeSaaSworkshopPublicSubnet2Subnet328CAB23"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/BuywithPrime-SaaS-workshop/PublicSubnet2/RouteTableAssociation"
+   }
+  },
+  "BuywithPrimeSaaSworkshopPublicSubnet2DefaultRoute024DB97A": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "BuywithPrimeSaaSworkshopPublicSubnet2RouteTableD4546EDA"
+    },
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "BuywithPrimeSaaSworkshopIGW04E0C78F"
+    }
+   },
+   "DependsOn": [
+    "BuywithPrimeSaaSworkshopVPCGWE744D740"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/BuywithPrime-SaaS-workshop/PublicSubnet2/DefaultRoute"
+   }
+  },
+  "BuywithPrimeSaaSworkshopPublicSubnet2EIP280814F9": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "InfraStack/BuywithPrime-SaaS-workshop/PublicSubnet2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/BuywithPrime-SaaS-workshop/PublicSubnet2/EIP"
+   }
+  },
+  "BuywithPrimeSaaSworkshopPublicSubnet2NATGateway22F65284": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "SubnetId": {
+     "Ref": "BuywithPrimeSaaSworkshopPublicSubnet2Subnet328CAB23"
+    },
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "BuywithPrimeSaaSworkshopPublicSubnet2EIP280814F9",
+      "AllocationId"
+     ]
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "InfraStack/BuywithPrime-SaaS-workshop/PublicSubnet2"
+     }
+    ]
+   },
+   "DependsOn": [
+    "BuywithPrimeSaaSworkshopPublicSubnet2DefaultRoute024DB97A",
+    "BuywithPrimeSaaSworkshopPublicSubnet2RouteTableAssociationF0485D7D"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/BuywithPrime-SaaS-workshop/PublicSubnet2/NATGateway"
+   }
+  },
+  "BuywithPrimeSaaSworkshopPrivateSubnet1SubnetFCA4D7E1": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "VpcId": {
+     "Ref": "BuywithPrimeSaaSworkshopAF2D401C"
+    },
+    "AvailabilityZone": "dummy1a",
+    "CidrBlock": "10.0.128.0/18",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Private"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "InfraStack/BuywithPrime-SaaS-workshop/PrivateSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/BuywithPrime-SaaS-workshop/PrivateSubnet1/Subnet"
+   }
+  },
+  "BuywithPrimeSaaSworkshopPrivateSubnet1RouteTable61C6100A": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "VpcId": {
+     "Ref": "BuywithPrimeSaaSworkshopAF2D401C"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "InfraStack/BuywithPrime-SaaS-workshop/PrivateSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/BuywithPrime-SaaS-workshop/PrivateSubnet1/RouteTable"
+   }
+  },
+  "BuywithPrimeSaaSworkshopPrivateSubnet1RouteTableAssociation2228BF82": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "BuywithPrimeSaaSworkshopPrivateSubnet1RouteTable61C6100A"
+    },
+    "SubnetId": {
+     "Ref": "BuywithPrimeSaaSworkshopPrivateSubnet1SubnetFCA4D7E1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/BuywithPrime-SaaS-workshop/PrivateSubnet1/RouteTableAssociation"
+   }
+  },
+  "BuywithPrimeSaaSworkshopPrivateSubnet1DefaultRouteEF7C1300": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "BuywithPrimeSaaSworkshopPrivateSubnet1RouteTable61C6100A"
+    },
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "BuywithPrimeSaaSworkshopPublicSubnet1NATGateway316871D6"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/BuywithPrime-SaaS-workshop/PrivateSubnet1/DefaultRoute"
+   }
+  },
+  "BuywithPrimeSaaSworkshopPrivateSubnet2SubnetD820DF6B": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "VpcId": {
+     "Ref": "BuywithPrimeSaaSworkshopAF2D401C"
+    },
+    "AvailabilityZone": "dummy1b",
+    "CidrBlock": "10.0.192.0/18",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Private"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "InfraStack/BuywithPrime-SaaS-workshop/PrivateSubnet2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/BuywithPrime-SaaS-workshop/PrivateSubnet2/Subnet"
+   }
+  },
+  "BuywithPrimeSaaSworkshopPrivateSubnet2RouteTableF9AC4E9F": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "VpcId": {
+     "Ref": "BuywithPrimeSaaSworkshopAF2D401C"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "InfraStack/BuywithPrime-SaaS-workshop/PrivateSubnet2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/BuywithPrime-SaaS-workshop/PrivateSubnet2/RouteTable"
+   }
+  },
+  "BuywithPrimeSaaSworkshopPrivateSubnet2RouteTableAssociation90DE136C": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "BuywithPrimeSaaSworkshopPrivateSubnet2RouteTableF9AC4E9F"
+    },
+    "SubnetId": {
+     "Ref": "BuywithPrimeSaaSworkshopPrivateSubnet2SubnetD820DF6B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/BuywithPrime-SaaS-workshop/PrivateSubnet2/RouteTableAssociation"
+   }
+  },
+  "BuywithPrimeSaaSworkshopPrivateSubnet2DefaultRoute7B673270": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "BuywithPrimeSaaSworkshopPrivateSubnet2RouteTableF9AC4E9F"
+    },
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "BuywithPrimeSaaSworkshopPublicSubnet2NATGateway22F65284"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/BuywithPrime-SaaS-workshop/PrivateSubnet2/DefaultRoute"
+   }
+  },
+  "BuywithPrimeSaaSworkshopIGW04E0C78F": {
+   "Type": "AWS::EC2::InternetGateway",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "InfraStack/BuywithPrime-SaaS-workshop"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/BuywithPrime-SaaS-workshop/IGW"
+   }
+  },
+  "BuywithPrimeSaaSworkshopVPCGWE744D740": {
+   "Type": "AWS::EC2::VPCGatewayAttachment",
+   "Properties": {
+    "VpcId": {
+     "Ref": "BuywithPrimeSaaSworkshopAF2D401C"
+    },
+    "InternetGatewayId": {
+     "Ref": "BuywithPrimeSaaSworkshopIGW04E0C78F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/BuywithPrime-SaaS-workshop/VPCGW"
+   }
+  },
+  "BuywithPrimeSaaSworkshopRestrictDefaultSecurityGroupCustomResourceEEE6A58D": {
+   "Type": "Custom::VpcRestrictDefaultSG",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E",
+      "Arn"
+     ]
+    },
+    "DefaultSecurityGroupId": {
+     "Fn::GetAtt": [
+      "BuywithPrimeSaaSworkshopAF2D401C",
+      "DefaultSecurityGroup"
+     ]
+    },
+    "Account": "750244747429"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/BuywithPrime-SaaS-workshop/RestrictDefaultSecurityGroupCustomResource/Default"
+   }
+  },
+  "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ],
+    "Policies": [
+     {
+      "PolicyName": "Inline",
+      "PolicyDocument": {
+       "Version": "2012-10-17",
+       "Statement": [
+        {
+         "Effect": "Allow",
+         "Action": [
+          "ec2:AuthorizeSecurityGroupIngress",
+          "ec2:AuthorizeSecurityGroupEgress",
+          "ec2:RevokeSecurityGroupIngress",
+          "ec2:RevokeSecurityGroupEgress"
+         ],
+         "Resource": [
+          {
+           "Fn::Join": [
+            "",
+            [
+             "arn:aws:ec2:us-east-1:750244747429:security-group/",
+             {
+              "Fn::GetAtt": [
+               "BuywithPrimeSaaSworkshopAF2D401C",
+               "DefaultSecurityGroup"
+              ]
+             }
+            ]
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role"
+   }
+  },
+  "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-750244747429-us-east-1",
+     "S3Key": "e77031893275c08bcaa0a774aa8b611727afd045b3b5d8e1e6f0f04063d9d386.zip"
+    },
+    "Timeout": 900,
+    "MemorySize": 128,
+    "Handler": "__entrypoint__.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs16.x",
+    "Description": "Lambda function for removing all inbound/outbound rules from the VPC default security group"
+   },
+   "DependsOn": [
+    "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler",
+    "aws:asset:path": "asset.e77031893275c08bcaa0a774aa8b611727afd045b3b5d8e1e6f0f04063d9d386",
+    "aws:asset:property": "Code"
+   }
+  },
+  "OauthHandlerLoadBalancer72118791": {
+   "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+   "Properties": {
+    "LoadBalancerAttributes": [
+     {
+      "Key": "deletion_protection.enabled",
+      "Value": "false"
+     }
+    ],
+    "Scheme": "internet-facing",
+    "SecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "OauthHandlerLoadBalancerSecurityGroupBB95F5E5",
+       "GroupId"
+      ]
+     }
+    ],
+    "Subnets": [
+     {
+      "Ref": "BuywithPrimeSaaSworkshopPublicSubnet1SubnetA27F4821"
+     },
+     {
+      "Ref": "BuywithPrimeSaaSworkshopPublicSubnet2Subnet328CAB23"
+     }
+    ],
+    "Type": "application"
+   },
+   "DependsOn": [
+    "BuywithPrimeSaaSworkshopPublicSubnet1DefaultRoute5D9E6343",
+    "BuywithPrimeSaaSworkshopPublicSubnet1RouteTableAssociationA4713494",
+    "BuywithPrimeSaaSworkshopPublicSubnet2DefaultRoute024DB97A",
+    "BuywithPrimeSaaSworkshopPublicSubnet2RouteTableAssociationF0485D7D"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/OauthHandlerLoadBalancer/Resource"
+   }
+  },
+  "OauthHandlerLoadBalancerSecurityGroupBB95F5E5": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Automatically created Security Group for ELB InfraStackOauthHandlerLoadBalancerC81B12C6",
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow from anyone on port 80",
+      "FromPort": 80,
+      "IpProtocol": "tcp",
+      "ToPort": 80
+     }
+    ],
+    "VpcId": {
+     "Ref": "BuywithPrimeSaaSworkshopAF2D401C"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/OauthHandlerLoadBalancer/SecurityGroup/Resource"
+   }
+  },
+  "OauthHandlerLoadBalancerListener2F8087F3": {
+   "Type": "AWS::ElasticLoadBalancingV2::Listener",
+   "Properties": {
+    "DefaultActions": [
+     {
+      "TargetGroupArn": {
+       "Ref": "TargetGroup3D7CD9B8"
+      },
+      "Type": "forward"
+     }
+    ],
+    "LoadBalancerArn": {
+     "Ref": "OauthHandlerLoadBalancer72118791"
+    },
+    "Port": 80,
+    "Protocol": "HTTP"
+   },
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/OauthHandlerLoadBalancer/Listener/Resource"
+   }
+  },
+  "TargetGroup3D7CD9B8": {
+   "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+   "Properties": {
+    "Port": 8080,
+    "Protocol": "HTTP",
+    "TargetGroupAttributes": [
+     {
+      "Key": "stickiness.enabled",
+      "Value": "false"
+     }
+    ],
+    "TargetType": "ip",
+    "VpcId": {
+     "Ref": "BuywithPrimeSaaSworkshopAF2D401C"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/TargetGroup/Resource"
+   }
+  },
+  "oauthECREF231385": {
+   "Type": "AWS::ECR::Repository",
+   "Properties": {
+    "RepositoryName": "bwp-saas-integration",
+    "Tags": [
+     {
+      "Key": "aws-cdk:auto-delete-images",
+      "Value": "true"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/oauthECR/Resource"
+   }
+  },
+  "oauthECRAutoDeleteImagesCustomResource18070BFF": {
+   "Type": "Custom::ECRAutoDeleteImages",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomECRAutoDeleteImagesCustomResourceProviderHandler8D89C030",
+      "Arn"
+     ]
+    },
+    "RepositoryName": {
+     "Ref": "oauthECREF231385"
+    }
+   },
+   "DependsOn": [
+    "oauthECREF231385"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/oauthECR/AutoDeleteImagesCustomResource/Default"
+   }
+  },
+  "CustomECRAutoDeleteImagesCustomResourceProviderRole665F2773": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ],
+    "Policies": [
+     {
+      "PolicyName": "Inline",
+      "PolicyDocument": {
+       "Version": "2012-10-17",
+       "Statement": [
+        {
+         "Effect": "Allow",
+         "Action": [
+          "ecr:BatchDeleteImage",
+          "ecr:DescribeRepositories",
+          "ecr:ListImages",
+          "ecr:ListTagsForResource"
+         ],
+         "Resource": [
+          {
+           "Fn::GetAtt": [
+            "oauthECREF231385",
+            "Arn"
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/Custom::ECRAutoDeleteImagesCustomResourceProvider/Role"
+   }
+  },
+  "CustomECRAutoDeleteImagesCustomResourceProviderHandler8D89C030": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-750244747429-us-east-1",
+     "S3Key": "795922bafbdb127c43a740e7279057766391cb2d8a002ef7ea2bdb10cc7261e9.zip"
+    },
+    "Timeout": 900,
+    "MemorySize": 128,
+    "Handler": "__entrypoint__.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomECRAutoDeleteImagesCustomResourceProviderRole665F2773",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs16.x",
+    "Description": "Lambda function for auto-deleting images in undefined repository."
+   },
+   "DependsOn": [
+    "CustomECRAutoDeleteImagesCustomResourceProviderRole665F2773"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/Custom::ECRAutoDeleteImagesCustomResourceProvider/Handler",
+    "aws:asset:path": "asset.795922bafbdb127c43a740e7279057766391cb2d8a002ef7ea2bdb10cc7261e9",
+    "aws:asset:property": "Code"
+   }
+  },
+  "BuywithPrimeTokenStoreB1C1282A": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "KeySchema": [
+     {
+      "AttributeName": "installation_id",
+      "KeyType": "HASH"
+     },
+     {
+      "AttributeName": "updated_at",
+      "KeyType": "RANGE"
+     }
+    ],
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "installation_id",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "updated_at",
+      "AttributeType": "N"
+     }
+    ],
+    "ProvisionedThroughput": {
+     "ReadCapacityUnits": 5,
+     "WriteCapacityUnits": 5
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/BuywithPrimeTokenStore/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/21R0WrCQBD8Ft/Pa7VQfLVSRChtiOJr2VxWu5rchbu9iIT8e++iMSn06WZmh2Xmdi4XL3I2gYubqvw8LSiTzZZBnUWQvhtUc9nsKyVWB71PViLxWUFq6zONHLUBpcYz7iArcNAHbemcUQRMRj/MEbxvkvh8Aq+B8QJXkViqAxwWbzSjDbg33JLc2ZJD1p8SNYstKm+Jr2trfNVlGAutwAIckyoM5BkUoBXpYx3aLasqVOqifYTZWzdDGzf84WMfOUZ99/R4NN+BPYbAfZARDTGUlU2KlXHExnZ1BtaK/KqhNHm4wuMvO9C2IkVnvFVB845NOdC44d9RYk1NeczmHHI46zF0jv4vz5XnVmiTozy5p3q2kLNX+Tw5OaKp9ZqpRJne3l8zN/DAIwIAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "OAuthRepository": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      {
+       "Fn::Select": [
+        4,
+        {
+         "Fn::Split": [
+          ":",
+          {
+           "Fn::GetAtt": [
+            "oauthECREF231385",
+            "Arn"
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      ".dkr.ecr.",
+      {
+       "Fn::Select": [
+        3,
+        {
+         "Fn::Split": [
+          ":",
+          {
+           "Fn::GetAtt": [
+            "oauthECREF231385",
+            "Arn"
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      ".",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "oauthECREF231385"
+      }
+     ]
+    ]
+   }
+  },
+  "ExportsOutputFnGetAttOauthHandlerLoadBalancer72118791DNSNameA2D0D5D4": {
+   "Value": {
+    "Fn::GetAtt": [
+     "OauthHandlerLoadBalancer72118791",
+     "DNSName"
+    ]
+   },
+   "Export": {
+    "Name": "InfraStack:ExportsOutputFnGetAttOauthHandlerLoadBalancer72118791DNSNameA2D0D5D4"
+   }
+  },
+  "ExportsOutputFnGetAttoauthECREF231385ArnD57FAB67": {
+   "Value": {
+    "Fn::GetAtt": [
+     "oauthECREF231385",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "InfraStack:ExportsOutputFnGetAttoauthECREF231385ArnD57FAB67"
+   }
+  },
+  "ExportsOutputRefoauthECREF231385B6402735": {
+   "Value": {
+    "Ref": "oauthECREF231385"
+   },
+   "Export": {
+    "Name": "InfraStack:ExportsOutputRefoauthECREF231385B6402735"
+   }
+  },
+  "ExportsOutputRefBuywithPrimeTokenStoreB1C1282A26952121": {
+   "Value": {
+    "Ref": "BuywithPrimeTokenStoreB1C1282A"
+   },
+   "Export": {
+    "Name": "InfraStack:ExportsOutputRefBuywithPrimeTokenStoreB1C1282A26952121"
+   }
+  },
+  "ExportsOutputFnGetAttBuywithPrimeTokenStoreB1C1282AArnE7773FF3": {
+   "Value": {
+    "Fn::GetAtt": [
+     "BuywithPrimeTokenStoreB1C1282A",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "InfraStack:ExportsOutputFnGetAttBuywithPrimeTokenStoreB1C1282AArnE7773FF3"
+   }
+  },
+  "ExportsOutputRefTargetGroup3D7CD9B851D89F1E": {
+   "Value": {
+    "Ref": "TargetGroup3D7CD9B8"
+   },
+   "Export": {
+    "Name": "InfraStack:ExportsOutputRefTargetGroup3D7CD9B851D89F1E"
+   }
+  },
+  "ExportsOutputRefBuywithPrimeSaaSworkshopPrivateSubnet1SubnetFCA4D7E10F495B9D": {
+   "Value": {
+    "Ref": "BuywithPrimeSaaSworkshopPrivateSubnet1SubnetFCA4D7E1"
+   },
+   "Export": {
+    "Name": "InfraStack:ExportsOutputRefBuywithPrimeSaaSworkshopPrivateSubnet1SubnetFCA4D7E10F495B9D"
+   }
+  },
+  "ExportsOutputRefBuywithPrimeSaaSworkshopPrivateSubnet2SubnetD820DF6B3290DAD2": {
+   "Value": {
+    "Ref": "BuywithPrimeSaaSworkshopPrivateSubnet2SubnetD820DF6B"
+   },
+   "Export": {
+    "Name": "InfraStack:ExportsOutputRefBuywithPrimeSaaSworkshopPrivateSubnet2SubnetD820DF6B3290DAD2"
+   }
+  },
+  "ExportsOutputRefBuywithPrimeSaaSworkshopAF2D401C942F8372": {
+   "Value": {
+    "Ref": "BuywithPrimeSaaSworkshopAF2D401C"
+   },
+   "Export": {
+    "Name": "InfraStack:ExportsOutputRefBuywithPrimeSaaSworkshopAF2D401C942F8372"
+   }
+  },
+  "ExportsOutputFnGetAttOauthHandlerLoadBalancerSecurityGroupBB95F5E5GroupId3BFEFE46": {
+   "Value": {
+    "Fn::GetAtt": [
+     "OauthHandlerLoadBalancerSecurityGroupBB95F5E5",
+     "GroupId"
+    ]
+   },
+   "Export": {
+    "Name": "InfraStack:ExportsOutputFnGetAttOauthHandlerLoadBalancerSecurityGroupBB95F5E5GroupId3BFEFE46"
+   }
+  },
+  "tokenStoreName": {
+   "Value": {
+    "Ref": "BuywithPrimeTokenStoreB1C1282A"
+   }
+  },
+  "loadbalancerDnsUrl": {
+   "Value": {
+    "Fn::GetAtt": [
+     "OauthHandlerLoadBalancer72118791",
+     "DNSName"
+    ]
+   },
+   "Export": {
+    "Name": "installUrl"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}
